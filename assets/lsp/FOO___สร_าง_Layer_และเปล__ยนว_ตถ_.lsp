@@ -1,0 +1,8 @@
+(defun c:foo ( / a n) ;/ สร้าง Layer และเปลี่ยนวัตถุ (ไม่เปลี่ยน สี ขนาด อื่น ๆ)
+ (princ "\nSelect Objects to change ")
+ (setq a (ssget))
+ (setq n (getstring "\n Enter name of new layer "))
+ (vl-cmdf "._layer" "_n" n "")
+ (vl-cmdf "._change" a "" "_p" "_la" n "")
+ (princ)
+)
