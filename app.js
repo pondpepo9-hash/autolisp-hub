@@ -1,6 +1,6 @@
 ﻿/**
  * =========================================================================
- * AutoLISP Hub - Minimal & Fast Edition (No GIF required)
+ * AutoLISP Hub - Minimal & Fast Edition (Direct Download Only)
  * =========================================================================
  */
 
@@ -212,13 +212,6 @@ const displayedCountEl = document.getElementById("displayed-count");
 const countAllEl = document.getElementById("count-all");
 const categoryButtons = document.querySelectorAll(".filter-btn");
 
-// Modals
-const codeModal = document.getElementById("code-modal");
-const modalCodeTitle = document.getElementById("modal-code-title");
-const modalCodeContent = document.getElementById("modal-code-content");
-const modalCopyBtn = document.getElementById("modal-copy-btn");
-const copyBtnText = document.getElementById("copy-btn-text");
-
 const guideModal = document.getElementById("guide-modal");
 const btnGuide = document.getElementById("btn-guide");
 
@@ -255,7 +248,7 @@ const categoryConfig = {
 };
 
 /**
- * Render LISP Cards (Clean & Minimal Layout)
+ * Render LISP Cards (Direct Download Button only)
  */
 function renderCards() {
   const filtered = lispDatabase.filter(item => {
@@ -328,23 +321,14 @@ function renderCards() {
           ${item.description}
         </p>
 
-        <!-- Actions -->
-        <div class="pt-4 border-t border-slate-800/80 flex items-center gap-2 mt-auto">
+        <!-- Direct Download Action (Single Prominent Button) -->
+        <div class="pt-3 border-t border-slate-800/80 mt-auto">
           <button 
             onclick="downloadLispFile('${item.id}')" 
-            class="flex-1 flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 text-xs sm:text-sm font-bold shadow-md shadow-cyan-500/20 transition-all active:scale-95"
+            class="w-full flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 text-sm font-bold shadow-md shadow-cyan-500/20 transition-all active:scale-98"
           >
             <i data-lucide="download" class="w-4 h-4"></i>
             <span>ดาวน์โหลด .LSP</span>
-          </button>
-
-          <button 
-            onclick="openCodeModal('${item.id}')" 
-            class="flex items-center justify-center space-x-1 py-2.5 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs sm:text-sm font-medium transition-colors"
-            title="ดูโค้ด AutoLISP"
-          >
-            <i data-lucide="code-2" class="w-4 h-4 text-cyan-400"></i>
-            <span>ดูโค้ด</span>
           </button>
         </div>
 
@@ -400,7 +384,6 @@ btnAddLisp.addEventListener("click", () => {
   lucide.createIcons();
 });
 
-// Dropzone handler
 lspDropzone.addEventListener("click", (e) => {
   if (e.target !== btnRemoveLsp) {
     lspFileInput.click();
@@ -536,31 +519,8 @@ window.deleteCustomLisp = function(id, event) {
 };
 
 // ==========================================
-// 🛠️ MODALS (Code Viewer, Guide)
+// 🛠️ DOWNLOAD & HELPERS
 // ==========================================
-
-let currentModalCode = "";
-window.openCodeModal = function(id) {
-  const item = lispDatabase.find(i => i.id === id);
-  if (!item) return;
-
-  modalCodeTitle.textContent = `${item.command.toLowerCase()}.lsp - ${item.title}`;
-  modalCodeContent.textContent = item.code.trim();
-  currentModalCode = item.code.trim();
-  
-  codeModal.classList.remove("hidden");
-  lucide.createIcons();
-};
-
-modalCopyBtn.addEventListener("click", () => {
-  if (currentModalCode) {
-    copyToClipboard(currentModalCode, "คัดลอกโค้ด AutoLISP เรียบร้อยแล้ว!");
-    copyBtnText.textContent = "Copied!";
-    setTimeout(() => {
-      copyBtnText.textContent = "Copy Code";
-    }, 2000);
-  }
-});
 
 window.downloadLispFile = function(id) {
   const item = lispDatabase.find(i => i.id === id);
@@ -614,13 +574,12 @@ function showToast(message) {
 
 document.querySelectorAll(".modal-close").forEach(btn => {
   btn.addEventListener("click", () => {
-    codeModal.classList.add("hidden");
     guideModal.classList.add("hidden");
     uploadModal.classList.add("hidden");
   });
 });
 
-[codeModal, guideModal, uploadModal].forEach(modal => {
+[guideModal, uploadModal].forEach(modal => {
   modal.addEventListener("click", (e) => {
     if (e.target === modal) {
       modal.classList.add("hidden");
@@ -635,7 +594,6 @@ btnGuide.addEventListener("click", () => {
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
-    codeModal.classList.add("hidden");
     guideModal.classList.add("hidden");
     uploadModal.classList.add("hidden");
   }
