@@ -1,6 +1,5 @@
 ﻿/* Custom Styles for AutoLISP Hub */
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
@@ -31,7 +30,7 @@ html {
   box-shadow: 0 4px 14px 0 rgba(2, 132, 199, 0.39);
 }
 
-/* Glassmorphism Card Hover */
+/* Card Hover */
 .lisp-card {
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -39,7 +38,7 @@ html {
 .lisp-card:hover {
   transform: translateY(-4px);
   border-color: #0284c7;
-  box-shadow: 0 12px 30px -10px rgba(2, 132, 199, 0.2);
+  box-shadow: 0 12px 30px -10px rgba(2, 132, 199, 0.25);
 }
 
 /* GIF preview container */
@@ -63,10 +62,31 @@ html {
   border: 1px solid rgba(56, 189, 248, 0.3);
 }
 
-/* Code block scroll styling */
-pre {
-  scrollbar-width: thin;
-  scrollbar-color: #334155 #020617;
+/* Dropzone Hover and Dragging */
+.dropzone {
+  transition: all 0.2s ease;
+}
+
+.dropzone.dragover {
+  border-color: #38bdf8 !important;
+  background-color: rgba(56, 189, 248, 0.1) !important;
+  transform: scale(1.01);
+}
+
+/* Modal animation */
+.animate-in {
+  animation: modalFadeIn 0.2s ease-out forwards;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* Utility to hide scrollbars */

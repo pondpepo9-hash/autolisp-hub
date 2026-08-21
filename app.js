@@ -1,22 +1,21 @@
 ﻿/**
  * =========================================================================
- * AutoLISP Hub - Data & Application Logic
+ * AutoLISP Hub - Data & Application Logic with Easy Upload System
  * =========================================================================
- * วิธีเพิ่ม / แก้ไขรายการ AutoLISP:
- * แก้ไขข้อมูลใน array `lispDatabase` ด้านล่างนี้ได้เลย
  */
 
-const lispDatabase = [
+// Initial Default LISP Library
+const defaultLispDatabase = [
   {
     id: "autonum",
     title: "Auto Numbering Sequence (รันเลขต่อเนื่อง)",
     command: "NUMSEQ",
-    category: "text", // "text" | "layer" | "dim" | "draw" | "util"
+    category: "text",
     version: "v2.1",
     author: "CADDev",
     description: "คลิกเพื่อวางตัวเลขลำดับอัตโนมัติ (1, 2, 3, ...) สามารถตั้งค่า Prefix (เช่น A-01), Suffix และระยะก้าว (Increment) ได้อย่างรวดเร็ว",
-    gifUrl: "assets/gifs/autonum.gif", // ใส่ path ของไฟล์ GIF
-    downloadUrl: "assets/lsp/autonum.lsp", // หรือใส่ลิงก์ Google Drive
+    gifUrl: "assets/gifs/autonum.gif",
+    downloadUrl: "assets/lsp/autonum.lsp",
     compatibility: "AutoCAD / BricsCAD / ZWCAD",
     code: `;;; ========================================================
 ;;; Auto Numbering Sequence (NUMSEQ.lsp)
@@ -116,7 +115,6 @@ const lispDatabase = [
     (repeat (setq i (sslength ss))
       (setq ent (ssname ss (setq i (1- i))))
       (setq ed (entget ent))
-      ;; ปรับแก้จุดตำแหน่งเส้นบอกขนาด (Group 10 / 11)
       (setq ed (subst (cons 10 (list (car (cdr (assoc 10 ed))) (cadr pt) 0.0))
                       (assoc 10 ed) ed))
       (entmod ed)
@@ -185,11 +183,27 @@ const lispDatabase = [
   (princ "\nกำลัง Audit ซ่อมแซมฐานข้อมูลไฟล์...")
   (command "._AUDIT" "Y")
   (setvar "CMDECHO" 1)
-  (princ "\n>>> ทำความสะอาดไฟล์ CAD เสร็จสมบูรณ์! ไฟล์เบาและไวขึ้นแน่นอน <<<")
+  (princ "\n>>> ทำความสะอาดไฟล์ CAD เสร็จสมบูรณ์! <<<")
   (princ)
 )`
   }
 ];
+
+// Load local custom items
+function getStoredDatabase() {
+  const localData = localStorage.getItem("custom_autolisp_data");
+  if (localData) {
+    try {
+      const parsed = JSON.parse(localData);
+      return [...parsed, ...defaultLispDatabase];
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  return [...defaultLispDatabase];
+}
+
+let lispDatabase = getStoredDatabase();
 
 // App State
 let currentCategory = "all";
@@ -217,6 +231,35 @@ const modalMediaImg = document.getElementById("modal-media-img");
 
 const guideModal = document.getElementById("guide-modal");
 const btnGuide = document.getElementById("btn-guide");
+
+const uploadModal = document.getElementById("upload-modal");
+const btnAddLisp = document.getElementById("btn-add-lisp");
+const addLispForm = document.getElementById("add-lisp-form");
+
+// Dropzones & File Inputs
+const lspDropzone = document.getElementById("lsp-dropzone");
+const lspFileInput = document.getElementById("lsp-file-input");
+const lspDropLabel = document.getElementById("lsp-drop-label");
+const lspFileBadge = document.getElementById("lsp-file-badge");
+const lspFileName = document.getElementById("lsp-file-name");
+const btnRemoveLsp = document.getElementById("btn-remove-lsp");
+
+const gifDropzone = document.getElementById("gif-dropzone");
+const gifFileInput = document.getElementById("gif-file-input");
+const gifDropLabel = document.getElementById("gif-drop-label");
+const gifPreviewContainer = document.getElementById("gif-preview-container");
+const gifPreviewImg = document.getElementById("gif-preview-img");
+const btnRemoveGif = document.getElementById("btn-remove-gif");
+
+// Form Fields
+const formTitle = document.getElementById("form-title");
+const formCommand = document.getElementById("form-command");
+const formCategory = document.getElementById("form-category");
+const formVersion = document.getElementById("form-version");
+const formDesc = document.getElementById("form-desc");
+const formCode = document.getElementById("form-code");
+
+let uploadedGifData = "";
 
 const toast = document.getElementById("toast");
 const toastMessage = document.getElementById("toast-message");
@@ -251,7 +294,7 @@ function getPlaceholderGif(title, command) {
     <rect x="30" y="270" width="540" height="45" rx="6" fill="#030712" stroke="#334155" stroke-width="1"/>
     <text x="45" y="298" fill="#38bdf8" font-family="monospace" font-size="14">Command: ${command}</text>
     <text x="300" y="70" fill="#f8fafc" font-family="sans-serif" font-weight="bold" font-size="18" text-anchor="middle">${title}</text>
-    <text x="300" y="195" fill="#94a3b8" font-family="sans-serif" font-size="13" text-anchor="middle">คลิกเพื่อดูตัวอย่างภาพเคลื่อนไหว / วิดีโอ</text>
+    <text x="300" y="195" fill="#94a3b8" font-family="sans-serif" font-size="13" text-anchor="middle">คลิกเพื่อดูภาพขยาย / GIF Preview</text>
   </svg>`;
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
 }
@@ -271,7 +314,6 @@ function renderCards() {
     return matchCategory && matchSearch;
   });
 
-  // Update Counters
   countAllEl.textContent = lispDatabase.length;
   displayedCountEl.textContent = filtered.length;
 
@@ -286,10 +328,22 @@ function renderCards() {
   lispGrid.innerHTML = filtered.map(item => {
     const cat = categoryConfig[item.category] || { label: item.category, color: "bg-slate-800 text-slate-300 border-slate-700" };
     const imgSrc = item.gifUrl || getPlaceholderGif(item.title, item.command);
+    const isCustom = item.isCustom ? true : false;
 
     return `
-      <article class="lisp-card flex flex-col bg-cad-card border border-cad-border rounded-2xl overflow-hidden shadow-lg group">
+      <article class="lisp-card flex flex-col bg-cad-card border border-cad-border rounded-2xl overflow-hidden shadow-lg group relative">
         
+        <!-- Custom Tag / Delete button if user added -->
+        ${isCustom ? `
+          <button 
+            onclick="deleteCustomLisp('${item.id}', event)" 
+            class="absolute top-3 right-3 z-10 p-1.5 rounded-lg bg-red-950/80 hover:bg-red-800 text-red-300 border border-red-700 transition-colors shadow-lg" 
+            title="ลบรายการนี้"
+          >
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+          </button>
+        ` : ''}
+
         <!-- GIF / Image Preview Area -->
         <div class="gif-container h-48 w-full border-b border-cad-border relative cursor-pointer group-hover:brightness-105 transition-all" onclick="openMediaModal('${item.id}')">
           <img 
@@ -301,14 +355,12 @@ function renderCards() {
           >
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
           
-          <!-- Category Badge -->
           <div class="absolute top-3 left-3">
             <span class="text-xs px-2.5 py-1 rounded-md font-medium border ${cat.color} backdrop-blur-md">
               ${cat.label}
             </span>
           </div>
 
-          <!-- Zoom Overlay Prompt -->
           <div class="absolute bottom-3 right-3 flex items-center space-x-1 px-2 py-1 rounded-md bg-black/60 backdrop-blur-md text-xs text-slate-300 opacity-90 group-hover:opacity-100 transition-opacity">
             <i data-lucide="play-circle" class="w-3.5 h-3.5 text-cyan-400"></i>
             <span>Preview GIF</span>
@@ -346,7 +398,6 @@ function renderCards() {
 
           <!-- Card Actions (Download & View Code) -->
           <div class="pt-4 border-t border-cad-border flex items-center gap-2 mt-auto">
-            <!-- Download Button -->
             <button 
               onclick="downloadLispFile('${item.id}')" 
               class="flex-1 flex items-center justify-center space-x-1.5 py-2 px-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs sm:text-sm font-bold shadow-md shadow-cyan-500/20 transition-all active:scale-95"
@@ -355,7 +406,6 @@ function renderCards() {
               <span>โหลด .LSP</span>
             </button>
 
-            <!-- View Code Button -->
             <button 
               onclick="openCodeModal('${item.id}')" 
               class="flex items-center justify-center space-x-1 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs sm:text-sm font-medium transition-colors"
@@ -371,12 +421,11 @@ function renderCards() {
     `;
   }).join("");
 
-  // Re-initialize Lucide Icons for injected cards
   lucide.createIcons();
 }
 
 /**
- * Handle Search
+ * Handle Search & Filters
  */
 searchInput.addEventListener("input", (e) => {
   searchKeyword = e.target.value;
@@ -391,9 +440,6 @@ clearSearchBtn.addEventListener("click", () => {
   renderCards();
 });
 
-/**
- * Handle Category Tabs
- */
 categoryButtons.forEach(btn => {
   btn.addEventListener("click", () => {
     categoryButtons.forEach(b => {
@@ -414,9 +460,213 @@ document.getElementById("reset-filter-btn")?.addEventListener("click", () => {
   categoryButtons[0].click();
 });
 
-/**
- * Open Code Modal
- */
+// ==========================================
+// 🚀 EASY UPLOAD / SMART PARSER LOGIC
+// ==========================================
+
+// Open Upload Modal
+btnAddLisp.addEventListener("click", () => {
+  uploadModal.classList.remove("hidden");
+  lucide.createIcons();
+});
+
+// 1. LSP File Dropzone & Click
+lspDropzone.addEventListener("click", (e) => {
+  if (e.target !== btnRemoveLsp) {
+    lspFileInput.click();
+  }
+});
+
+["dragenter", "dragover"].forEach(eventName => {
+  lspDropzone.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    lspDropzone.classList.add("dragover");
+  });
+});
+
+["dragleave", "drop"].forEach(eventName => {
+  lspDropzone.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    lspDropzone.classList.remove("dragover");
+  });
+});
+
+lspDropzone.addEventListener("drop", (e) => {
+  const files = e.dataTransfer.files;
+  if (files.length > 0) {
+    handleLspFile(files[0]);
+  }
+});
+
+lspFileInput.addEventListener("change", (e) => {
+  if (e.target.files.length > 0) {
+    handleLspFile(e.target.files[0]);
+  }
+});
+
+function handleLspFile(file) {
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const text = evt.target.result;
+    formCode.value = text;
+    
+    // Auto-detect Command from `(defun c:COMMANDNAME`
+    const commandMatch = text.match(/\(defun\s+c:([a-zA-Z0-9_\-]+)/i);
+    if (commandMatch && commandMatch[1]) {
+      formCommand.value = commandMatch[1].toUpperCase();
+    } else {
+      const baseName = file.name.replace(/\.[^/.]+$/, "").toUpperCase();
+      formCommand.value = baseName;
+    }
+
+    if (!formTitle.value) {
+      formTitle.value = file.name.replace(/\.[^/.]+$/, "");
+    }
+
+    lspFileName.textContent = file.name;
+    lspDropLabel.classList.add("hidden");
+    lspFileBadge.classList.remove("hidden");
+    lspFileBadge.classList.add("flex");
+    showToast(`อ่านไฟล์ ${file.name} และตรวจพบคำสั่ง ${formCommand.value} สำเร็จ!`);
+  };
+  reader.readAsText(file);
+}
+
+btnRemoveLsp.addEventListener("click", (e) => {
+  e.stopPropagation();
+  lspFileInput.value = "";
+  lspDropLabel.classList.remove("hidden");
+  lspFileBadge.classList.add("hidden");
+  lspFileBadge.classList.remove("flex");
+  formCode.value = "";
+});
+
+// 2. GIF / Image Dropzone & Click
+gifDropzone.addEventListener("click", (e) => {
+  if (e.target !== btnRemoveGif) {
+    gifFileInput.click();
+  }
+});
+
+["dragenter", "dragover"].forEach(eventName => {
+  gifDropzone.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    gifDropzone.classList.add("dragover");
+  });
+});
+
+["dragleave", "drop"].forEach(eventName => {
+  gifDropzone.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    gifDropzone.classList.remove("dragover");
+  });
+});
+
+gifDropzone.addEventListener("drop", (e) => {
+  const files = e.dataTransfer.files;
+  if (files.length > 0) {
+    handleGifFile(files[0]);
+  }
+});
+
+gifFileInput.addEventListener("change", (e) => {
+  if (e.target.files.length > 0) {
+    handleGifFile(e.target.files[0]);
+  }
+});
+
+function handleGifFile(file) {
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    uploadedGifData = evt.target.result;
+    gifPreviewImg.src = uploadedGifData;
+    gifDropLabel.classList.add("hidden");
+    gifPreviewContainer.classList.remove("hidden");
+    showToast("อัปโหลดภาพตัวอย่าง GIF สำเร็จ!");
+  };
+  reader.readAsDataURL(file);
+}
+
+btnRemoveGif.addEventListener("click", (e) => {
+  e.stopPropagation();
+  gifFileInput.value = "";
+  uploadedGifData = "";
+  gifDropLabel.classList.remove("hidden");
+  gifPreviewContainer.classList.add("hidden");
+});
+
+// 3. Form Submit -> Add to Library
+addLispForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const title = formTitle.value.trim();
+  const command = formCommand.value.trim().toUpperCase();
+  const category = formCategory.value;
+  const version = formVersion.value.trim() || "v1.0";
+  const desc = formDesc.value.trim() || "คำสั่ง AutoLISP เสริมประสิทธิภาพใน AutoCAD";
+  const code = formCode.value.trim() || `(defun c:${command} ()\n  (princ "\\n${command} is ready.")\n  (princ)\n)`;
+  const gifUrl = uploadedGifData || "";
+
+  const newItem = {
+    id: "custom_" + Date.now(),
+    title: title,
+    command: command,
+    category: category,
+    version: version,
+    author: "User",
+    description: desc,
+    gifUrl: gifUrl,
+    downloadUrl: "",
+    compatibility: "AutoCAD All Versions",
+    code: code,
+    isCustom: true
+  };
+
+  // Save to LocalStorage
+  let localCustomList = [];
+  const stored = localStorage.getItem("custom_autolisp_data");
+  if (stored) {
+    try { localCustomList = JSON.parse(stored); } catch(err) {}
+  }
+  localCustomList.unshift(newItem);
+  localStorage.setItem("custom_autolisp_data", JSON.stringify(localCustomList));
+
+  // Update in-memory database
+  lispDatabase = [newItem, ...lispDatabase];
+  renderCards();
+
+  // Reset form & close modal
+  addLispForm.reset();
+  uploadedGifData = "";
+  btnRemoveLsp.click();
+  btnRemoveGif.click();
+  uploadModal.classList.add("hidden");
+
+  showToast(`✓ เพิ่มคำสั่ง ${command} เข้าสู่หน้าเว็บเรียบร้อย!`);
+});
+
+// Delete custom item
+window.deleteCustomLisp = function(id, event) {
+  event.stopPropagation();
+  if (confirm("คุณต้องการลบคำสั่งนี้ออกจากหน้าเว็บใช่หรือไม่?")) {
+    let localCustomList = [];
+    const stored = localStorage.getItem("custom_autolisp_data");
+    if (stored) {
+      try {
+        localCustomList = JSON.parse(stored).filter(i => i.id !== id);
+        localStorage.setItem("custom_autolisp_data", JSON.stringify(localCustomList));
+      } catch(err) {}
+    }
+    lispDatabase = lispDatabase.filter(i => i.id !== id);
+    renderCards();
+    showToast("ลบรายการเรียบร้อยแล้ว");
+  }
+};
+
+// ==========================================
+// 🛠️ MODALS (Code Viewer, Media, Guide)
+// ==========================================
+
 let currentModalCode = "";
 window.openCodeModal = function(id) {
   const item = lispDatabase.find(i => i.id === id);
@@ -440,9 +690,6 @@ modalCopyBtn.addEventListener("click", () => {
   }
 });
 
-/**
- * Open Media/GIF Modal
- */
 window.openMediaModal = function(id) {
   const item = lispDatabase.find(i => i.id === id);
   if (!item) return;
@@ -452,21 +699,16 @@ window.openMediaModal = function(id) {
   mediaModal.classList.remove("hidden");
 };
 
-/**
- * Download LISP file (creates direct blob download if local file isn't uploaded yet)
- */
 window.downloadLispFile = function(id) {
   const item = lispDatabase.find(i => i.id === id);
   if (!item) return;
 
-  // If user provided a direct external download link (e.g. Google Drive)
   if (item.downloadUrl && (item.downloadUrl.startsWith("http://") || item.downloadUrl.startsWith("https://"))) {
     window.open(item.downloadUrl, "_blank");
     showToast(`กำลังเปิดลิงก์ดาวน์โหลด ${item.command}.lsp`);
     return;
   }
 
-  // Generate downloadable .lsp file on the fly from the code string
   const blob = new Blob([item.code], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -480,14 +722,10 @@ window.downloadLispFile = function(id) {
   showToast(`เริ่มดาวน์โหลดไฟล์ ${item.command.toLowerCase()}.lsp สำเร็จ!`);
 };
 
-/**
- * Copy to Clipboard Helper
- */
 window.copyToClipboard = function(text, successMsg = "คัดลอกแล้ว!") {
   navigator.clipboard.writeText(text).then(() => {
     showToast(successMsg);
   }).catch(() => {
-    // Fallback for older browsers
     const textarea = document.createElement("textarea");
     textarea.value = text;
     document.body.appendChild(textarea);
@@ -498,9 +736,6 @@ window.copyToClipboard = function(text, successMsg = "คัดลอกแล�
   });
 };
 
-/**
- * Toast Notification
- */
 let toastTimeout;
 function showToast(message) {
   clearTimeout(toastTimeout);
@@ -514,18 +749,16 @@ function showToast(message) {
   }, 2500);
 }
 
-/**
- * Close Modals
- */
 document.querySelectorAll(".modal-close").forEach(btn => {
   btn.addEventListener("click", () => {
     codeModal.classList.add("hidden");
     mediaModal.classList.add("hidden");
     guideModal.classList.add("hidden");
+    uploadModal.classList.add("hidden");
   });
 });
 
-[codeModal, mediaModal, guideModal].forEach(modal => {
+[codeModal, mediaModal, guideModal, uploadModal].forEach(modal => {
   modal.addEventListener("click", (e) => {
     if (e.target === modal) {
       modal.classList.add("hidden");
@@ -538,12 +771,12 @@ btnGuide.addEventListener("click", () => {
   lucide.createIcons();
 });
 
-// ESC key to close any modal
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     codeModal.classList.add("hidden");
     mediaModal.classList.add("hidden");
     guideModal.classList.add("hidden");
+    uploadModal.classList.add("hidden");
   }
 });
 
