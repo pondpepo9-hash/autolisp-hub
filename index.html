@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AutoLISP Hub & Library - คลังเครื่องมือ AutoCAD</title>
+  <title>AutoLISP Hub - คลังสคริปต์ AutoCAD</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -29,12 +29,11 @@
           colors: {
             cad: {
               50: '#f0fdf4',
-              500: '#22c55e',
-              600: '#16a34a',
+              500: '#0ea5e9',
               dark: '#0f172a',
-              darker: '#080d19',
-              card: '#1e293b',
-              border: '#334155',
+              darker: '#090e1a',
+              card: '#162032',
+              border: '#243248',
               accent: '#38bdf8',
             }
           }
@@ -47,13 +46,13 @@
 <body class="bg-cad-darker text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-cad-accent selection:text-slate-900">
 
   <!-- TOP NAVBAR -->
-  <header class="sticky top-0 z-40 backdrop-blur-md bg-cad-darker/80 border-b border-cad-border">
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-cad-darker/85 border-b border-cad-border">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       
       <!-- Brand Logo -->
       <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-          <i data-lucide="layers" class="w-6 h-6 text-white"></i>
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+          <i data-lucide="terminal" class="w-5 h-5 text-white"></i>
         </div>
         <div>
           <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 bg-clip-text text-transparent">
@@ -65,14 +64,14 @@
         </div>
       </div>
 
-      <!-- Quick Actions (Add LISP Button + Guide) -->
+      <!-- Quick Actions -->
       <div class="flex items-center space-x-2 sm:space-x-3">
-        <button id="btn-add-lisp" class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 text-sm font-bold transition-all shadow-md shadow-emerald-500/20 active:scale-95">
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
-          <span>+ เพิ่ม LISP ใหม่ (อัปโหลด)</span>
+        <button id="btn-add-lisp" class="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 text-xs sm:text-sm font-bold transition-all shadow-md shadow-cyan-500/25 active:scale-95">
+          <i data-lucide="file-plus-2" class="w-4 h-4"></i>
+          <span>+ เพิ่มไฟล์ .LSP</span>
         </button>
 
-        <button id="btn-guide" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-medium border border-cad-border transition-colors">
+        <button id="btn-guide" class="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs sm:text-sm font-medium border border-cad-border transition-colors">
           <i data-lucide="help-circle" class="w-4 h-4 text-cyan-400"></i>
           <span class="hidden sm:inline">วิธีติดตั้งใน CAD</span>
         </button>
@@ -81,29 +80,25 @@
   </header>
 
   <!-- HERO SECTION -->
-  <section class="relative overflow-hidden py-10 sm:py-14 border-b border-cad-border bg-gradient-to-b from-cad-dark to-cad-darker">
+  <section class="relative overflow-hidden py-10 sm:py-12 border-b border-cad-border bg-gradient-to-b from-cad-dark to-cad-darker">
     <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30"></div>
     
-    <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-cyan-300 text-xs sm:text-sm font-medium mb-3">
-        <span class="flex h-2 w-2 rounded-full bg-cyan-400 animate-ping"></span>
-        <span>รวมสคริปต์ AutoLISP พร้อมภาพตัวอย่าง GIF & ดาวน์โหลด</span>
-      </div>
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white mb-3 leading-tight">
-        คลังดาวน์โหลด <span class="bg-gradient-to-r from-cyan-400 to-sky-500 bg-clip-text text-transparent">AutoLISP</span> ประจำตัวคุณ
+        คลังดาวน์โหลด <span class="bg-gradient-to-r from-cyan-400 to-sky-400 bg-clip-text text-transparent">AutoLISP</span> ประจำตัว
       </h1>
-      <p class="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto mb-6 font-light">
-        อัปโหลดไฟล์ <code class="text-cyan-300 bg-slate-800 px-1 py-0.5 rounded font-mono">.lsp</code> หรือรูป <code class="text-emerald-300 bg-slate-800 px-1 py-0.5 rounded font-mono">.gif</code> เข้าสู่หน้าเว็บได้ทันทีใน 3 วินาที
+      <p class="text-slate-400 text-xs sm:text-sm max-w-xl mx-auto mb-6 font-light">
+        ค้นหาคำสั่ง คัดลอกโค้ด หรือดาวน์โหลดไฟล์ <code class="text-cyan-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono text-xs">.lsp</code> ไปใช้งานใน AutoCAD ได้ทันที
       </p>
 
-      <!-- SEARCH & FILTER BAR -->
+      <!-- SEARCH BAR -->
       <div class="max-w-2xl mx-auto">
         <div class="relative">
           <i data-lucide="search" class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
           <input 
             type="text" 
             id="search-input" 
-            placeholder="ค้นหาชื่อคำสั่งย่อ (Command), ชื่อ LISP หรือฟังก์ชันการทำงาน..." 
+            placeholder="ค้นหาคำสั่งย่อ (Command), ชื่อ LISP หรือคำอธิบาย..." 
             class="w-full pl-12 pr-10 py-3 rounded-xl bg-slate-900/90 border border-cad-border text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all shadow-xl font-normal text-sm"
           >
           <button id="clear-search" class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-200">
@@ -140,29 +135,27 @@
         </button>
       </div>
 
-      <!-- Result Counter & Export Data Action -->
-      <div class="flex items-center gap-3">
-        <div class="text-xs text-slate-400 font-mono flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-          แสดง <span id="displayed-count" class="text-slate-200 font-bold">0</span> รายการ
-        </div>
+      <!-- Result Counter -->
+      <div class="text-xs text-slate-400 font-mono flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        พร้อมใช้งาน <span id="displayed-count" class="text-slate-200 font-bold">0</span> รายการ
       </div>
     </div>
 
-    <!-- LISP CARDS GRID -->
-    <div id="lisp-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- LISP CARDS GRID (Compact & Clean without GIF) -->
+    <div id="lisp-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       <!-- Cards populated by app.js -->
     </div>
 
     <!-- EMPTY STATE -->
     <div id="empty-state" class="hidden text-center py-16 bg-slate-900/40 rounded-2xl border border-dashed border-slate-800">
-      <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center text-slate-500">
-        <i data-lucide="file-search" class="w-8 h-8"></i>
+      <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-slate-800 flex items-center justify-center text-slate-500">
+        <i data-lucide="file-search" class="w-7 h-7"></i>
       </div>
-      <h3 class="text-lg font-semibold text-slate-300 mb-1">ไม่พบคำสั่ง AutoLISP</h3>
-      <p class="text-slate-500 text-sm max-w-sm mx-auto mb-4">ลองค้นหาด้วยคำอื่น หรือกดปุ่มด้านบนเพื่อเพิ่ม LISP ใหม่</p>
-      <button id="reset-filter-btn" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-400 text-sm font-medium border border-slate-700 transition-colors">
-        ล้างตัวกรองทั้งหมด
+      <h3 class="text-base font-semibold text-slate-300 mb-1">ไม่พบคำสั่ง AutoLISP</h3>
+      <p class="text-slate-500 text-xs max-w-sm mx-auto mb-4">ลองค้นหาด้วยคำอื่น หรือกดปุ่มด้านบนเพื่อเพิ่มไฟล์ .lsp ใหม่</p>
+      <button id="reset-filter-btn" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-400 text-xs font-medium border border-slate-700 transition-colors">
+        ล้างการค้นหา
       </button>
     </div>
   </main>
@@ -174,24 +167,24 @@
         <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i>
         <span>AutoLISP Portfolio & Library</span>
       </div>
-      <p>รองรับ AutoCAD, BricsCAD, ZWCAD และโปรแกรม CAD ที่รองรับ AutoLISP</p>
+      <p>รองรับ AutoCAD, BricsCAD, ZWCAD และ GstarCAD</p>
       <p>© สร้างด้วยความใส่ใจเพื่อคนทำงาน CAD</p>
     </div>
   </footer>
 
   <!-- ==================== MODALS ==================== -->
 
-  <!-- 🌟 1. EASY UPLOAD & ADD LISP MODAL -->
+  <!-- 🌟 EASY UPLOAD .LSP MODAL (No GIF needed) -->
   <div id="upload-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-cad-border rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in">
+    <div class="bg-slate-900 border border-cad-border rounded-2xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in">
       
       <!-- Modal Header -->
       <div class="px-6 py-4 border-b border-cad-border flex items-center justify-between bg-slate-950">
         <div class="flex items-center space-x-2">
-          <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-            <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+          <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+            <i data-lucide="file-up" class="w-4 h-4"></i>
           </div>
-          <h3 class="text-base font-bold text-slate-100">เพิ่ม AutoLISP ใหม่ (อัปโหลดฉบับง่าย)</h3>
+          <h3 class="text-base font-bold text-slate-100">เพิ่ม AutoLISP (.lsp) เข้าสู่คลัง</h3>
         </div>
         <button class="modal-close p-1.5 text-slate-400 hover:text-slate-200 rounded-lg hover:bg-slate-800 transition-colors">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -201,65 +194,39 @@
       <!-- Modal Form Body -->
       <form id="add-lisp-form" class="p-6 overflow-y-auto space-y-4 flex-1 text-xs sm:text-sm">
         
-        <!-- STEP 1: UPLOAD .LSP FILE (Auto Parser) -->
+        <!-- DROP .LSP FILE -->
         <div>
-          <label class="block text-slate-300 font-semibold mb-1.5 flex items-center justify-between">
-            <span class="flex items-center gap-1.5">
-              <i data-lucide="file-code" class="w-4 h-4 text-cyan-400"></i>
-              1. เลือกไฟล์ AutoLISP (<code class="text-cyan-300 font-mono">.lsp</code>)
-            </span>
-            <span class="text-xs text-slate-400 font-normal">ระบบจะดึงคำสั่งย่อและโค้ดให้อัตโนมัติ</span>
+          <label class="block text-slate-300 font-semibold mb-1.5">
+            1. ลากไฟล์ <code class="text-cyan-300 font-mono">.lsp</code> มาวาง หรือคลิกเพื่อเลือกไฟล์
           </label>
-          <div id="lsp-dropzone" class="dropzone p-4 rounded-xl border-2 border-dashed border-slate-700 bg-slate-950/60 hover:border-cyan-500 transition-colors cursor-pointer text-center">
+          <div id="lsp-dropzone" class="dropzone p-5 rounded-xl border-2 border-dashed border-slate-700 bg-slate-950/60 hover:border-cyan-500 transition-colors cursor-pointer text-center">
             <input type="file" id="lsp-file-input" accept=".lsp,.txt" class="hidden">
             <div id="lsp-drop-label" class="flex flex-col items-center justify-center py-2 space-y-1">
-              <i data-lucide="file-up" class="w-6 h-6 text-slate-400 mb-1"></i>
-              <span class="text-slate-300 font-medium">คลิกเพื่อเลือกไฟล์ <span class="text-cyan-400">.lsp</span> หรือลากไฟล์มาวาง</span>
-              <span class="text-slate-500 text-xs">รองรับไฟล์ .lsp และ .txt</span>
+              <i data-lucide="upload-cloud" class="w-8 h-8 text-cyan-400 mb-1"></i>
+              <span class="text-slate-200 font-medium">คลิกเพื่อเลือกไฟล์ <span class="text-cyan-400">.lsp</span> หรือลากไฟล์มาวาง</span>
+              <span class="text-slate-500 text-xs">ระบบจะอ่านคำสั่งย่อและโค้ดให้อัตโนมัติ</span>
             </div>
             <div id="lsp-file-badge" class="hidden items-center justify-center gap-2 text-cyan-300 font-mono">
-              <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
               <span id="lsp-file-name" class="font-bold"></span>
-              <button type="button" id="btn-remove-lsp" class="text-red-400 hover:text-red-300 ml-2">ลบ</button>
+              <button type="button" id="btn-remove-lsp" class="text-red-400 hover:text-red-300 ml-2">เปลี่ยนไฟล์</button>
             </div>
           </div>
         </div>
 
-        <!-- STEP 2: UPLOAD GIF PREVIEW -->
-        <div>
-          <label class="block text-slate-300 font-semibold mb-1.5 flex items-center justify-between">
-            <span class="flex items-center gap-1.5">
-              <i data-lucide="image" class="w-4 h-4 text-emerald-400"></i>
-              2. อัปโหลดภาพตัวอย่าง GIF (<code class="text-emerald-300 font-mono">.gif / .png / .jpg</code>)
-            </span>
-            <span class="text-xs text-slate-400 font-normal">หรือเว้นว่างไว้เพื่อใช้ภาพจำลอง</span>
-          </label>
-          <div id="gif-dropzone" class="dropzone p-3 rounded-xl border-2 border-dashed border-slate-700 bg-slate-950/60 hover:border-emerald-500 transition-colors cursor-pointer text-center">
-            <input type="file" id="gif-file-input" accept="image/*,.gif" class="hidden">
-            <div id="gif-drop-label" class="flex flex-col items-center justify-center py-2 space-y-1">
-              <i data-lucide="video" class="w-6 h-6 text-slate-400 mb-1"></i>
-              <span class="text-slate-300 font-medium">คลิกเลือกภาพ GIF หรือลากไฟล์ภาพมาวาง</span>
-            </div>
-            <div id="gif-preview-container" class="hidden flex flex-col items-center">
-              <img id="gif-preview-img" src="" class="max-h-32 rounded-lg border border-slate-700 mb-2 object-contain">
-              <button type="button" id="btn-remove-gif" class="text-xs text-red-400 hover:text-red-300">เปลี่ยนภาพใหม่</button>
-            </div>
+        <!-- DETAILS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">คำสั่งย่อใน AutoCAD (Command) *</label>
+            <input type="text" id="form-command" required placeholder="เช่น NUMSEQ หรือ QLAY" class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-cyan-300 font-mono font-bold uppercase focus:outline-none focus:ring-2 focus:ring-cyan-500">
           </div>
-        </div>
-
-        <!-- STEP 3: LISP DETAILS (Title, Shortcut, Category) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-800">
           <div>
             <label class="block text-slate-300 font-medium mb-1">ชื่อโปรแกรม / ฟังก์ชัน *</label>
             <input type="text" id="form-title" required placeholder="เช่น Auto Numbering" class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500">
           </div>
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">คำสั่งย่อใน AutoCAD (Command) *</label>
-            <input type="text" id="form-command" required placeholder="เช่น NUMSEQ หรือ QLAY" class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-cyan-300 font-mono uppercase focus:outline-none focus:ring-2 focus:ring-cyan-500">
-          </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-slate-300 font-medium mb-1">หมวดหมู่</label>
             <select id="form-category" class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500">
@@ -271,20 +238,19 @@
             </select>
           </div>
           <div>
-            <label class="block text-slate-300 font-medium mb-1">เวอร์ชัน / ผู้พัฒนา</label>
-            <input type="text" id="form-version" placeholder="v1.0 โดย คุณ" class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500">
+            <label class="block text-slate-300 font-medium mb-1">เวอร์ชัน (ไม่บังคับ)</label>
+            <input type="text" id="form-version" placeholder="v1.0" class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500">
           </div>
         </div>
 
         <div>
-          <label class="block text-slate-300 font-medium mb-1">คำอธิบายการทำงาน</label>
-          <textarea id="form-desc" rows="2" placeholder="อธิบายสั้นๆ ว่าคำสั่งนี้ช่วยทำอะไร..." class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500"></textarea>
+          <label class="block text-slate-300 font-medium mb-1">คำอธิบายการทำงานสั้นๆ</label>
+          <textarea id="form-desc" rows="2" placeholder="อธิบายว่าคำสั่งนี้ช่วยทำงานอะไรใน AutoCAD..." class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500"></textarea>
         </div>
 
-        <!-- HIDDEN CODE CONTAINER (Filled automatically from .lsp) -->
         <div>
-          <label class="block text-slate-300 font-medium mb-1">โค้ด AutoLISP (แก้ไขได้)</label>
-          <textarea id="form-code" rows="3" placeholder="; โค้ด LISP จะถูกกรอกอัตโนมัติเมื่อเลือกไฟล์ .lsp" class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-cyan-200 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500"></textarea>
+          <label class="block text-slate-300 font-medium mb-1">โค้ด AutoLISP</label>
+          <textarea id="form-code" rows="4" placeholder="; โค้ดจะถูกกรอกอัตโนมัติเมื่อเลือกไฟล์ .lsp หรือวางโค้ดตรงนี้" class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-cyan-200 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500"></textarea>
         </div>
 
       </form>
@@ -294,14 +260,14 @@
         <button type="button" class="modal-close px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm font-medium transition-colors">
           ยกเลิก
         </button>
-        <button type="submit" form="add-lisp-form" class="px-5 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold rounded-xl text-sm transition-all shadow-lg shadow-emerald-500/20 active:scale-95">
-          ✓ บันทึกและเพิ่มเข้าสู่เว็บไซต์
+        <button type="submit" form="add-lisp-form" class="px-5 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-sm transition-all shadow-lg shadow-cyan-500/20 active:scale-95">
+          ✓ บันทึกเข้าสู่หน้าเว็บ
         </button>
       </div>
     </div>
   </div>
 
-  <!-- 2. CODE VIEWER MODAL -->
+  <!-- CODE VIEWER MODAL -->
   <div id="code-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-cad-border rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
       <div class="px-6 py-4 border-b border-cad-border flex items-center justify-between bg-slate-950">
@@ -312,7 +278,7 @@
           <h3 id="modal-code-title" class="text-sm font-mono text-slate-200 font-semibold ml-2">code.lsp</h3>
         </div>
         <div class="flex items-center space-x-2">
-          <button id="modal-copy-btn" class="flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-700 text-xs font-mono transition-colors">
+          <button id="modal-copy-btn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-700 text-xs font-mono transition-colors">
             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
             <span id="copy-btn-text">Copy Code</span>
           </button>
@@ -325,34 +291,13 @@
         <pre><code id="modal-code-content" class="whitespace-pre"></code></pre>
       </div>
       <div class="px-6 py-3 border-t border-cad-border bg-slate-900 flex justify-between items-center text-xs text-slate-400">
-        <span>คัดลอกไปวางในหน้าต่าง Command หรือเซฟเป็นไฟล์ <code class="text-cyan-400">.lsp</code> ได้ทันที</span>
+        <span>คัดลอกไปวางใน Command Line หรือเซฟเป็นไฟล์ <code class="text-cyan-400">.lsp</code> ได้ทันที</span>
         <button class="modal-close px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-md transition-colors">ปิด</button>
       </div>
     </div>
   </div>
 
-  <!-- 3. GIF / IMAGE LIGHTBOX MODAL -->
-  <div id="media-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="relative max-w-5xl w-full flex flex-col items-center">
-      <button class="modal-close absolute -top-10 right-0 text-slate-400 hover:text-white p-2">
-        <i data-lucide="x" class="w-6 h-6"></i>
-      </button>
-      <div class="bg-slate-900 rounded-xl overflow-hidden border border-slate-700 shadow-2xl w-full">
-        <div class="px-4 py-2.5 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <span class="text-xs font-mono text-cyan-400">Preview:</span>
-            <span id="modal-media-title" class="text-sm font-semibold text-slate-200"></span>
-          </div>
-          <span class="text-xs text-slate-400">คลิกเพื่อปิด</span>
-        </div>
-        <div class="p-2 flex items-center justify-center bg-black/40 min-h-[300px]">
-          <img id="modal-media-img" src="" alt="LISP Preview" class="max-h-[75vh] w-auto rounded object-contain">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4. HOW TO INSTALL CAD GUIDE MODAL -->
+  <!-- HOW TO INSTALL CAD GUIDE MODAL -->
   <div id="guide-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-cad-border rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
       <div class="px-6 py-4 border-b border-cad-border flex items-center justify-between bg-slate-950">
@@ -387,7 +332,7 @@
             <li>พิมพ์คำสั่ง <kbd class="px-1.5 py-0.5 bg-slate-900 border border-slate-700 rounded text-emerald-300 font-mono text-xs">APPLOAD</kbd> แล้วกด Enter</li>
             <li>มองหาไอคอนรูปกระเป๋านักเรียน <strong>Startup Suite</strong> $\rightarrow$ กดปุ่ม <strong>Contents...</strong></li>
             <li>กด <strong>Add...</strong> แล้วเลือกไฟล์ <code class="text-emerald-300 font-mono">.lsp</code> ที่ต้องการ</li>
-            <li>กด Close $\rightarrow$ ต่อไปนี้ตัว LISP จะพร้อมใช้งานตลอดเวลา</li>
+            <li>กด Close $\rightarrow$ ต่อไปนี้ตัว LISP จะพร้อมใช้งานตลอดเวลาทุกครั้งที่เปิด AutoCAD</li>
           </ol>
         </div>
       </div>

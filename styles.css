@@ -1,4 +1,4 @@
-﻿/* Custom Styles for AutoLISP Hub */
+﻿/* Custom Styles for AutoLISP Hub (Clean & Minimal CAD Edition) */
 
 html {
   scroll-behavior: smooth;
@@ -11,55 +11,46 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #090e1a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #243248;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #334155;
 }
 
 /* Filter buttons state */
 .filter-btn.active {
-  background-color: #0284c7;
+  background: linear-gradient(135deg, #0284c7, #0369a1);
   color: #ffffff;
-  box-shadow: 0 4px 14px 0 rgba(2, 132, 199, 0.39);
+  box-shadow: 0 4px 14px 0 rgba(2, 132, 199, 0.35);
 }
 
 /* Card Hover */
 .lisp-card {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  background: radial-gradient(120% 120% at 50% 0%, #1a263c 0%, #111a2a 100%);
 }
 
 .lisp-card:hover {
-  transform: translateY(-4px);
-  border-color: #0284c7;
-  box-shadow: 0 12px 30px -10px rgba(2, 132, 199, 0.25);
-}
-
-/* GIF preview container */
-.gif-container {
-  position: relative;
-  background-color: #020617;
-  overflow: hidden;
-}
-
-.gif-container img {
-  transition: transform 0.3s ease;
-}
-
-.lisp-card:hover .gif-container img {
-  transform: scale(1.02);
+  transform: translateY(-3px);
+  border-color: #38bdf8;
+  box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.18);
 }
 
 /* Badge glow */
 .command-badge {
-  background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(59, 130, 246, 0.15));
+  background: rgba(14, 165, 233, 0.12);
   border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.command-badge:hover {
+  background: rgba(14, 165, 233, 0.25);
+  border-color: rgba(56, 189, 248, 0.6);
 }
 
 /* Dropzone Hover and Dragging */
@@ -81,7 +72,7 @@ html {
 @keyframes modalFadeIn {
   from {
     opacity: 0;
-    transform: scale(0.96) translateY(10px);
+    transform: scale(0.96) translateY(8px);
   }
   to {
     opacity: 1;
@@ -89,7 +80,6 @@ html {
   }
 }
 
-/* Utility to hide scrollbars */
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
