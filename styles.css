@@ -1,0 +1,79 @@
+﻿/* Custom Styles for AutoLISP Hub */
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Filter buttons state */
+.filter-btn.active {
+  background-color: #0284c7;
+  color: #ffffff;
+  box-shadow: 0 4px 14px 0 rgba(2, 132, 199, 0.39);
+}
+
+/* Glassmorphism Card Hover */
+.lisp-card {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lisp-card:hover {
+  transform: translateY(-4px);
+  border-color: #0284c7;
+  box-shadow: 0 12px 30px -10px rgba(2, 132, 199, 0.2);
+}
+
+/* GIF preview container */
+.gif-container {
+  position: relative;
+  background-color: #020617;
+  overflow: hidden;
+}
+
+.gif-container img {
+  transition: transform 0.3s ease;
+}
+
+.lisp-card:hover .gif-container img {
+  transform: scale(1.02);
+}
+
+/* Badge glow */
+.command-badge {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(59, 130, 246, 0.15));
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+/* Code block scroll styling */
+pre {
+  scrollbar-width: thin;
+  scrollbar-color: #334155 #020617;
+}
+
+/* Utility to hide scrollbars */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
